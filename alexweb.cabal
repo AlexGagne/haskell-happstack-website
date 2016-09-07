@@ -52,7 +52,7 @@ library
                      , blaze-html
                      , bytestring
                      , cmdargs
-                     , happstack-server    >= 7.3
+                     , happstack-lite    >= 7.3
                      , text
                      -- buildpack to choose the modern mtl dependency.
                      , mtl                 >= 2.1.2
