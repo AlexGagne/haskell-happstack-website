@@ -48,7 +48,7 @@ cabal-version:       >=1.10
 library
   exposed-modules:     
     AlexWeb
-  build-depends:       base                >= 4.6    && <4.7
+  build-depends:       base                >= 4.9    && <4.10
                      , blaze-html
                      , bytestring
                      , cmdargs
@@ -62,7 +62,7 @@ library
 
 executable server
   main-is:             Server.hs
-  build-depends:       base >=4.6 && <4.7
+  build-depends:       base >=4.9 && <4.10
                      , alexweb
   hs-source-dirs:      exe
   default-language:    Haskell2010
