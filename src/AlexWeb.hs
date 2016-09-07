@@ -1,85 +1,43 @@
- {-# LANGUAGE OverloadedStrings, ScopedTypeVariables #-}
+{-# LANGUAGE DeriveDataTypeable #-}
+{-# LANGUAGE OverloadedStrings  #-}
+{-# LANGUAGE RecordWildCards    #-}
 
 module AlexWeb where
 
-import           Control.Applicative ((<$>), optional)
-import           Data.Maybe (fromMaybe)
-import           Data.Text (Text)
-import           Data.Text.Lazy (unpack)
-import           Happstack.Lite
-import           Text.Blaze.Html5 (Html, (!), a, form, input, p, toHtml, label)
-import           Text.Blaze.Html5.Attributes (action, enctype, href, name, size, type_, value)
-import qualified Text.Blaze.Html5 as H
-import qualified Text.Blaze.Html5.Attributes as A
+import           Control.Monad
+import           Data.Data
+import qualified Data.Text                       as T
+import qualified Happstack.Server                as H
 import           System.Console.CmdArgs.Implicit ((&=))
 import qualified System.Console.CmdArgs.Implicit as I
-
+import           Text.Blaze.Html5                ((!))
+import qualified Text.Blaze.Html5                as Html
+import qualified Text.Blaze.Html5.Attributes     as Attr
 
 main :: IO ()
 main = do
-    config <- I.cmdArgs aConfig
-    serve (hConf config) myApp
+  config <- I.cmdArgs aConfig
+  H.simpleHTTP (hConf config) myApp
 
-myApp :: ServerPart Response
+myApp :: H.ServerPart H.Response
 myApp = msum
-    [ dir "echo"    $ echo
-    , dir "query"   $ queryParams
-    , dir "form"    $ formPage
-    , homePage
-    ]
+  [ H.dir "echo" echo
+  ]
 
-template :: Text -> Html -> Response
-template title body = toResponse $
-    H.html $ do
-        H.head $ Html.title (toHtml title)
-        H.body $ do
-            body
-            p $ a ! href "/" $ "back home"
+template :: T.Text -> Html.Html -> H.Response
+template title body = H.toResponse $
+  Html.html $ do
+    Html.head $ Html.title (Html.toHtml title)
+    Html.body $ do
+      body
+      Html.p $ Html.a ! Attr.href "/" $ "back home"
 
-homePage :: ServerPart Response
-homePage =
-    ok $ template "home page" $ do
-        H.h1 "Hello!"
-        H.p "Writing applications with happstack-lite is fast and simple!"
-        H.p "Check out these killer apps."
-        H.p $ a ! href "/echo/secret%20message"  $ "echo"
-        H.p $ a ! href "/query?foo=bar" $ "query parameters"
-        H.p $ a ! href "/form"          $ "form processing"
-
-echo :: ServerPart Response
+echo :: H.ServerPart H.Response
 echo =
-    path $ \(msg :: String) ->
-        ok $ template "echo" $ do
-            p $ "echo says: " >> toHtml msg
-            p "Change the url to echo something else."        
-
-queryParams :: ServerPart Response
-queryParams =
-    do mFoo <- optional $ lookText "foo"
-       ok $ template "query params" $ do
-            p $ "foo is set to: " >> toHtml (show mFoo)
-            p $ "change the url to set it to something else."
-
-formPage :: ServerPart Response
-formPage = msum [ viewForm, processForm ]
-  where
-    viewForm :: ServerPart Response
-    viewForm =
-        do method GET
-           ok $ template "form" $
-              form ! action "/form" ! enctype "multipart/form-data" ! A.method "POST" $ do
-                label ! A.for "msg" $ "Say something clever"
-                input ! type_ "text" ! A.id "msg" ! name "msg"
-                input ! type_ "submit" ! value "Say it!"
-
-    processForm :: ServerPart Response
-    processForm =
-        do method POST
-           msg <- lookText "msg"
-           ok $ template "form" $ do
-             H.p "You said:"
-             H.p (toHtml msg)
-
+  H.path $ \msg ->
+    H.ok $ template "echo" $ do
+      Html.p $ "echo says: " >> Html.toHtml (msg :: String)
+      Html.p "Change the url to echo something else."
 
 -- Config
 --------------------------------------------------------------------------------
