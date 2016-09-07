@@ -1,6 +1,4 @@
-{-# LANGUAGE DeriveDataTypeable #-}
-{-# LANGUAGE OverloadedStrings  #-}
-{-# LANGUAGE RecordWildCards    #-}
+ {-# LANGUAGE OverloadedStrings, ScopedTypeVariables #-}
 
 module AlexWeb where
 
@@ -20,7 +18,7 @@ import qualified System.Console.CmdArgs.Implicit as I
 main :: IO ()
 main = do
     config <- I.cmdArgs aConfig
-    H.simpleHTTP (hConf config) myApp
+    serve (hConf config) myApp
 
 myApp :: ServerPart Response
 myApp = msum
@@ -30,13 +28,13 @@ myApp = msum
     , homePage
     ]
 
-template :: T.Text -> Html.Html -> H.Response
-template title body = H.toResponse $
-  Html.html $ do
-    Html.head $ Html.title (Html.toHtml title)
-    Html.body $ do
-      body
-      Html.p $ Html.a ! Attr.href "/" $ "back home"
+template :: Text -> Html -> Response
+template title body = toResponse $
+    H.html $ do
+        H.head $ Html.title (toHtml title)
+        H.body $ do
+            body
+            p $ a ! href "/" $ "back home"
 
 homePage :: ServerPart Response
 homePage =
@@ -58,7 +56,7 @@ echo =
 queryParams :: ServerPart Response
 queryParams =
     do mFoo <- optional $ lookText "foo"
-        ok $ template "query params" $ do
+       ok $ template "query params" $ do
             p $ "foo is set to: " >> toHtml (show mFoo)
             p $ "change the url to set it to something else."
 
