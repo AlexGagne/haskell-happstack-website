@@ -2,6 +2,8 @@
 {-# LANGUAGE OverloadedStrings  #-}
 {-# LANGUAGE RecordWildCards    #-}
 
+module AlexWeb where
+
 import           Control.Applicative ((<$>), optional)
 import           Data.Maybe (fromMaybe)
 import           Data.Text (Text)
@@ -14,7 +16,6 @@ import qualified Text.Blaze.Html5.Attributes as A
 import           System.Console.CmdArgs.Implicit ((&=))
 import qualified System.Console.CmdArgs.Implicit as I
 
-module AlexWeb where
 
 main :: IO ()
 main = do
