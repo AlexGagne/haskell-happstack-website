@@ -26,7 +26,7 @@ myApp = msum
   ]
 
 template :: T.Text -> Html.Html -> H.Response
-template title body = H.toResponse $ Html.doctypeHtml $ do
+template title body = H.toResponse $ Html.docTypeHtml $ do
     Html.html $ do
         Html.head $ Html.title (Html.toHtml title)
         Html.body $ do
