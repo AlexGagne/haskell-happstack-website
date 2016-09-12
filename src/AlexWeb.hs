@@ -34,7 +34,7 @@ template title body = Happ.toResponse $ H.docTypeHtml $ do
             H.p $ H.a ! A.href "/" $ "back home"
 
 homepage :: Happ.ServerPart Happ.Response
-homepage = H.ok $ template "My homepage" $ do
+homepage = Happ.ok $ template "My homepage" $ do
                 H.h1 "Hello!"
                 H.p $ "Welcome to this website!"
 
