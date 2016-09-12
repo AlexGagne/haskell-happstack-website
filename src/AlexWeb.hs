@@ -34,7 +34,8 @@ template title body = H.toResponse $ doctypeHtml $ do
             Html.p $ Html.a ! Attr.href "/" $ "back home"
 
 homepage :: H.ServerPart H.Response
-homepage = H.ok $ template "My homepage" do
+homepage = H.ok $ template "My homepage" $ do
+                Html.h1 "Hello!"
                 Html.p $ "Welcome to this website!"
 
 echo :: H.ServerPart H.Response
