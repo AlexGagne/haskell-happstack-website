@@ -7,43 +7,43 @@ module AlexWeb where
 import           Control.Monad
 import           Data.Data
 import qualified Data.Text                       as T
-import qualified Happstack.Server                as H
+import qualified Happstack.Server                as Happ
 import           System.Console.CmdArgs.Implicit ((&=))
 import qualified System.Console.CmdArgs.Implicit as I
 import           Text.Blaze.Html5                ((!))
-import qualified Text.Blaze.Html5                as Html
-import qualified Text.Blaze.Html5.Attributes     as Attr
+import qualified Text.Blaze.Html5                as H
+import qualified Text.Blaze.Html5.Attributes     as A
 
 main :: IO ()
 main = do
   config <- I.cmdArgs aConfig
-  H.simpleHTTP (hConf config) myApp
+  Happ.simpleHTTP (hConf config) myApp
 
-myApp :: H.ServerPart H.Response
+myApp :: Happ.ServerPart Happ.Response
 myApp = msum
-  [ H.dir "echo" echo,
+  [ Happ.dir "echo" echo,
     homepage
   ]
 
-template :: T.Text -> Html.Html -> H.Response
-template title body = H.toResponse $ Html.docTypeHtml $ do
-    Html.html $ do
-        Html.head $ Html.title (Html.toHtml title)
-        Html.body $ do
+template :: T.Text -> H.Html -> Happ.Response
+template title body = Happ.toResponse $ H.docTypeHtml $ do
+    H.html $ do
+        H.head $ H.title (H.toHtml title)
+        H.body $ do
             body
-            Html.p $ Html.a ! Attr.href "/" $ "back home"
+            H.p $ H.a ! A.href "/" $ "back home"
 
-homepage :: H.ServerPart H.Response
+homepage :: Happ.ServerPart Happ.Response
 homepage = H.ok $ template "My homepage" $ do
-                Html.h1 "Hello!"
-                Html.p $ "Welcome to this website!"
+                H.h1 "Hello!"
+                H.p $ "Welcome to this website!"
 
-echo :: H.ServerPart H.Response
+echo :: Happ.ServerPart Happ.Response
 echo =
-  H.path $ \msg ->
-    H.ok $ template "echo" $ do
-      Html.p $ "echo says: " >> Html.toHtml (msg :: String)
-      Html.p "Change the url to echo something else."
+  Happ.path $ \msg ->
+    Happ.ok $ template "echo" $ do
+      H.p $ "echo says: " >> H.toHtml (msg :: String)
+      H.p "Change the url to echo something else."
 
 -- Config
 --------------------------------------------------------------------------------
@@ -51,8 +51,8 @@ echo =
 data Config =
   Config { port :: Int, timeout :: Int } deriving ( Show, Eq, Data, Typeable )
 
-hConf :: Config -> H.Conf
-hConf (Config {..}) = H.nullConf { H.timeout = timeout, H.port = port }
+hConf :: Config -> Happ.Conf
+hConf (Config {..}) = Happ.nullConf { Happ.timeout = timeout, Happ.port = port }
 
 aConfig :: Config
 aConfig =
