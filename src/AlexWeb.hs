@@ -21,16 +21,21 @@ main = do
 
 myApp :: H.ServerPart H.Response
 myApp = msum
-  [ H.dir "echo" echo
+  [ H.dir "echo" echo,
+    homepage
   ]
 
 template :: T.Text -> Html.Html -> H.Response
-template title body = H.toResponse $
-  Html.html $ do
-    Html.head $ Html.title (Html.toHtml title)
-    Html.body $ do
-      body
-      Html.p $ Html.a ! Attr.href "/" $ "back home"
+template title body = H.toResponse $ doctypeHtml $ do
+    Html.html $ do
+        Html.head $ Html.title (Html.toHtml title)
+        Html.body $ do
+            body
+            Html.p $ Html.a ! Attr.href "/" $ "back home"
+
+homepage :: H.ServerPart H.Response
+homepage = H.ok $ template "My homepage" do
+                Html.p $ "Welcome to this website!"
 
 echo :: H.ServerPart H.Response
 echo =
