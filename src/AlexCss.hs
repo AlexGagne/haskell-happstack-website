@@ -12,7 +12,7 @@ bodyStyle = body ? do
   fontFamily  ["Helvetica Neue"] [sansSerif]
 
 generateCss :: Text
-generateCss = render $ toStrict bodyStyle
+generateCss = toStrict $ render bodyStyle
 
 generateCssFile :: IO ()
 generateCssFile = writeFile filepath generateCss
