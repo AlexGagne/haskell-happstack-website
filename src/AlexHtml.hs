@@ -25,14 +25,6 @@ myApp = msum
     homepage
   ]
 
-template :: T.Text -> H.Html -> Happ.Response
-template title body = Happ.toResponse $ H.docTypeHtml $ do
-    H.html $ do
-        H.head $ H.title (H.toHtml title)
-        H.body $ do
-            body
-            H.p $ H.a ! A.href "/" $ "back home"
-
 homepage :: Happ.ServerPart Happ.Response
 homepage = Happ.ok $ template "My homepage" $ do
                 H.h1 "Hello!"
@@ -44,6 +36,19 @@ echo =
     Happ.ok $ template "echo" $ do
       H.p $ "echo says: " >> H.toHtml (msg :: String)
       H.p "Change the url to echo something else."
+
+styleSheet :: AttributeValue -> Html
+styleSheet s = H.link ! A.href s ! A.rel "stylesheet" ! A.type_ "text/css"
+
+template :: T.Text -> H.Html -> Happ.Response
+template title body = Happ.toResponse $ H.docTypeHtml $ do
+    H.html $ do
+        H.head $ do 
+            H.title (H.toHtml title)          
+            styleSheet "test.css"
+        H.body $ do
+            body
+            H.p $ H.a ! A.href "/" $ "back home"
 
 -- Config
 --------------------------------------------------------------------------------
