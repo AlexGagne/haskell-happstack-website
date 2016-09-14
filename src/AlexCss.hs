@@ -3,6 +3,7 @@
 module AlexCss where
 
 import Clay
+import qualified Data.Text.Internal.Text as Text
 import Data.Text.Lazy
 import System.Directory
 
