@@ -1,6 +1,6 @@
 module Main where
 
-import qualified AlexHtml as Html
+import qualified AlexWeb as A
 
 main :: IO ()
-main = Html.main
+main = A.main
