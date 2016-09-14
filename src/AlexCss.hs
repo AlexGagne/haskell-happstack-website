@@ -17,4 +17,4 @@ generateCss = render bodyStyle
 generateCssFile :: IO ()
 generateCssFile = writeFile filepath generateCss
                     where 
-                        filepath = concat getCurrentDirectory "/test.css"
+                        filepath = getCurrentDirectory ++ "/test.css"
