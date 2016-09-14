@@ -72,8 +72,7 @@ library
 executable server
   main-is:             Server.hs
   build-depends:       base >=4.8 && <4.9
-                     , alexhtml
-                     , alexcss
+                     , alexweb
   hs-source-dirs:      exe
   default-language:    Haskell2010
   
