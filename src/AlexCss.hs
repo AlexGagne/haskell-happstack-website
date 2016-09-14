@@ -3,7 +3,7 @@
 module AlexCss where
 
 import Clay
-import Data.Text
+import Data.Text,Lazy
 import System.Directory
 
 bodyStyle :: Css
