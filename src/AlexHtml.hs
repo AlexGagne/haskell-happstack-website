@@ -2,7 +2,7 @@
 {-# LANGUAGE OverloadedStrings  #-}
 {-# LANGUAGE RecordWildCards    #-}
 
-module AlexWeb where
+module AlexHtml where
 
 import           Control.Monad
 import           Data.Data

@@ -1,6 +1,8 @@
 module Main where
 
-import qualified AlexWeb as A
+import qualified AlexHtml as Html
+import qualified AlexCss as Css
 
 main :: IO ()
-main = A.main
+main = do   Css.generateCssFile 
+            Html.main
