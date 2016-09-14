@@ -3,7 +3,6 @@
 module AlexCss where
 
 import Clay
-import Data.Text.Lazy
 import System.Directory
 
 bodyStyle :: Css
@@ -12,7 +11,7 @@ bodyStyle = body ? do
   fontFamily  ["Helvetica Neue"] [sansSerif]
 
 generateCss :: Text
-generateCss = toStrict $ render bodyStyle
+generateCss = render bodyStyle
 
 generateCssFile :: IO ()
 generateCssFile = writeFile filepath generateCss
