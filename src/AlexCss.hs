@@ -1,10 +1,9 @@
 {-# LANGUAGE OverloadedStrings #-}
 
-module AlexCss where
+module AlexCss (generateCss) where
 
 import Clay
-import qualified Data.Text.Internal.Text as Text
-import Data.Text.Lazy
+import qualified Data.Text as T
 import System.Directory
 
 bodyStyle :: Css
@@ -12,5 +11,5 @@ bodyStyle = body ? do
   background  aquamarine
   fontFamily  ["Helvetica Neue"] [sansSerif]
 
-generateCss :: Text
-generateCss = unpack $ render bodyStyle
+generateCss :: T.Text
+generateCss = render bodyStyle
