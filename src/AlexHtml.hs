@@ -25,15 +25,12 @@ echo =
       H.p $ "echo says: " >> H.toHtml (msg :: String)
       H.p "Change the url to echo something else."
 
-styleSheet :: H.AttributeValue -> H.Html
-styleSheet s = H.link ! A.href s ! A.rel "stylesheet" ! A.type_ "text/css"
-
 template :: T.Text -> H.Html -> Happ.Response
 template title body = Happ.toResponse $ 
     H.docTypeHtml $ do
-        H.head $ do 
-            css
+        H.head $ do
             H.title (H.toHtml title)
+            css
         H.body $ do
             body
             H.p $ H.a ! A.href "/" $ "back home"
