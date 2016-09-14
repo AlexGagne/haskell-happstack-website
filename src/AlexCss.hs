@@ -12,8 +12,8 @@ bodyStyle = body ? do
   background  aquamarine
   fontFamily  ["Helvetica Neue"] [sansSerif]
 
-generateCss :: Text
-generateCss = toStrict $ render bodyStyle
+generateCss :: String
+generateCss = unpack $ render bodyStyle
 
 generateCssFile :: IO ()
 generateCssFile = writeFile filepath generateCss
