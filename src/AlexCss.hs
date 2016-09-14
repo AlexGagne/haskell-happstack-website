@@ -3,7 +3,7 @@
 module AlexCss (generateCss) where
 
 import Clay
-import qualified Data.Text as T
+import qualified Data.Internal.Lazy as T
 import System.Directory
 
 bodyStyle :: Css
