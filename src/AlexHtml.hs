@@ -29,7 +29,7 @@ styleSheet :: H.AttributeValue -> H.Html
 styleSheet s = H.link ! A.href s ! A.rel "stylesheet" ! A.type_ "text/css"
 
 template :: T.Text -> H.Html -> Happ.Response
-template title body = Happ.toResponse $ do
+template title body = Happ.toResponse $ H.docTypeHtml $ do
     H.html $ do
         H.head $ do 
             css
