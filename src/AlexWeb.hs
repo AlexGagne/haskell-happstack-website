@@ -25,7 +25,6 @@ myApp = msum
     Html.homepage
   ]
 
-bdTest :: Happ.ServerPart Happ.Response
 bdTest = Happ.ok $ Happ.toResponse $ getBDValue
 
 getBDValue :: IO String
