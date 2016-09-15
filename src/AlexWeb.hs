@@ -10,7 +10,8 @@ import qualified Data.Text                       as T
 import qualified Happstack.Server                as Happ
 import           System.Console.CmdArgs.Implicit ((&=))
 import qualified System.Console.CmdArgs.Implicit as I
-import qualified AlexHtml as Html
+import qualified System.Environment              as E
+import qualified AlexHtml                        as Html
 
 main :: IO ()
 main = do
@@ -20,8 +21,15 @@ main = do
 myApp :: Happ.ServerPart Happ.Response
 myApp = msum
   [ Happ.dir "echo" Html.echo,
+    Happ.dir "bdtest" bdTest
     Html.homepage
   ]
+
+bdTest :: Happ.ServerPart Happ.Response
+bdTest = Happ.ok $ getBDValue
+
+getBDValue :: String
+getBDValue = getEnv "MONGODB_URI"
 
 -- Config
 --------------------------------------------------------------------------------
