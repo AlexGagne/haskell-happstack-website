@@ -16,17 +16,14 @@ import qualified AlexHtml                        as Html
 main :: IO ()
 main = do
   config <- I.cmdArgs aConfig
-  Happ.simpleHTTP (hConf config) myApp
+  mongoUri <- getBDValue
+  Happ.simpleHTTP (hConf config) mongoUri
 
-myApp :: IO Happ.ServerPart Happ.Response
+myApp :: Happ.ServerPart Happ.Response
 myApp = msum
   [ Happ.dir "echo" Html.echo,
-    Happ.dir "bdtest" bdTest,
     Html.homepage
   ]
-
-bdTest :: IO Happ.ServerPart Happ.Response
-bdTest = Happ.ok $ Happ.toResponse $  liftIO $ getBDValue
 
 getBDValue :: IO String
 getBDValue = E.getEnv "MONGODB_URI"
