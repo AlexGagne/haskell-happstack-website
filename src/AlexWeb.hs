@@ -25,7 +25,9 @@ myApp = msum
     Html.homepage
   ]
 
-bdTest = Happ.ok $ Happ.toResponse $ getBDValue
+bdTest :: Happ.ServerPart Happ.Response
+bdTest = Happ.ok $ Happ.toResponse $ bdValue
+        where bdValue <- liftIO $ getBDValue
 
 getBDValue :: IO String
 getBDValue = E.getEnv "MONGODB_URI"
