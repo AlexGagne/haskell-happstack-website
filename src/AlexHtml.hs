@@ -13,6 +13,12 @@ import qualified Text.Blaze.Html5                as H
 import qualified Text.Blaze.Html5.Attributes     as A
 import qualified AlexCss                         as Css
 
+
+{- TODO
+- Separate Happ from HTML generating code. This module should only generate HTML and not care what
+- the rest of the app does with it.
+-}
+
 homepage :: Happ.ServerPart Happ.Response
 homepage = Happ.ok $ template "My homepage" $ do
                 H.h1 "Hello!"
