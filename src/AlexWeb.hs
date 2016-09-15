@@ -22,7 +22,6 @@ main = do
 myApp :: Happ.ServerPart Happ.Response
 myApp = msum
   [ Happ.dir "echo" Html.echo,
-    Happ.dir "bdtest" bdTest,
     Html.homepage
   ]
 
