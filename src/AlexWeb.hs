@@ -17,7 +17,7 @@ main :: IO ()
 main = do
   config <- I.cmdArgs aConfig
   mongoUri <- getBDValue
-  Happ.simpleHTTP (hConf config) $ ok mongoUri
+  Happ.simpleHTTP (hConf config) $ Happ.ok mongoUri
 
 myApp :: Happ.ServerPart Happ.Response
 myApp = msum
