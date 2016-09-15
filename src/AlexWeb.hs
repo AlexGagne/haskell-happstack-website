@@ -29,7 +29,7 @@ bdTest :: Happ.ServerPart Happ.Response
 bdTest = Happ.ok $ getBDValue
 
 getBDValue :: String
-getBDValue = getEnv "MONGODB_URI"
+getBDValue = E.getEnv "MONGODB_URI"
 
 -- Config
 --------------------------------------------------------------------------------
