@@ -16,7 +16,7 @@ import qualified AlexCss                         as Css
 homepage :: Happ.ServerPart Happ.Response
 homepage = Happ.ok $ template "My homepage" $ do
                 H.h1 "Hello!"
-                H.p $ "Welcome to this website!"
+                H.p $ "Welcome to this website! "
 
 echo :: Happ.ServerPart Happ.Response
 echo =
