@@ -18,16 +18,15 @@ main = do
   config <- I.cmdArgs aConfig
   Happ.simpleHTTP (hConf config) myApp
 
-myApp :: Happ.ServerPart Happ.Response
+myApp :: IO Happ.ServerPart Happ.Response
 myApp = msum
   [ Happ.dir "echo" Html.echo,
     Happ.dir "bdtest" bdTest,
     Html.homepage
   ]
 
-bdTest :: Happ.ServerPart Happ.Response
-bdTest = Happ.ok $ Happ.toResponse $ bdValue
-        where bdValue <- liftIO $ getBDValue
+bdTest :: IO Happ.ServerPart Happ.Response
+bdTest = Happ.ok $ Happ.toResponse $  liftIO $ getBDValue
 
 getBDValue :: IO String
 getBDValue = E.getEnv "MONGODB_URI"
