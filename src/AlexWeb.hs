@@ -26,7 +26,7 @@ myApp = msum
   ]
 
 bdTest :: Happ.ServerPart Happ.Response
-bdTest = Happ.ok $ getBDValue
+bdTest = Happ.ok $ Happ.toResponse $ getBDValue
 
 getBDValue :: IO String
 getBDValue = E.getEnv "MONGODB_URI"
