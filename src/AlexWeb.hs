@@ -21,8 +21,8 @@ main = do
 
 myApp :: Happ.ServerPart Happ.Response
 myApp = msum
-  [ Happ.dir "echo" $ Happ.path $ \msg -> Happ.ok $ Html.echo msg,
-    Happ.ok $ Html.homepage
+  [ Happ.dir "echo" $ Happ.path $ \msg -> Happ.ok $ Happ.toResponse $ Html.echo msg,
+    Happ.ok $ Happ.toResponse Html.homepage
   ]
 
 getBDValue :: IO String
