@@ -10,8 +10,7 @@ I plan for this website to become my own personal website but is it currently in
 
 ## TODO
 
-- Separate HTML generating code from anything to do with Happstack
-- Connect to the MongoDB and start using it as a blog/personal website
+- Connect to the MongoDB and start using it to store data related to a blog/personal website
 - Look into Javascript generating librairies
 - Make the generated website pretty and usable
 
@@ -19,4 +18,4 @@ I plan for this website to become my own personal website but is it currently in
 
 These are problems that I do not know how to solve. I do not plan to tackle these issues because they are not major problems and my limited search hasn't revealed a quick answer. Feel free to contact me about those.
 
-- Separate CSS from the generated HTML so that CSS so it's not embedded in the generated HTML. -- Will be useful if I ever get to generating Javascript
+- Separate CSS from the generated HTML so that CSS so it's not embedded in the generated HTML. I will need a similar solution when I get to generating javascript
