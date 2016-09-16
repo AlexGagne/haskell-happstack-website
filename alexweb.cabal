@@ -59,6 +59,7 @@ library
                      , directory
                      , happstack-server    >= 7.3
                      , text
+                     , mongodb
                      -- buildpack to choose the modern mtl dependency.
                      , mtl                 >= 2.1.2
   hs-source-dirs:      src
