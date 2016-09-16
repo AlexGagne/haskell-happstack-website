@@ -18,4 +18,4 @@ I plan for this website to become my own personal website but is it currently in
 
 These are problems that I do not know how to solve. I do not plan to tackle these issues because they are not major problems and my limited search hasn't revealed a quick answer. Feel free to contact me about those.
 
-- Separate CSS from the generated HTML so that CSS so it's not embedded in the generated HTML. I will need a similar solution when I get to generating javascript
+- Separate CSS from the generated HTML so that CSS so it's not embedded in the generated HTML. I will need a similar solution when I get to generating javascript. I could add static CSS and Javascript files, but I'd like to still be able to use Clay and any javascript-generating library I will use in the future.
