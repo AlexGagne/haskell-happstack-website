@@ -2,31 +2,32 @@
 {-# LANGUAGE OverloadedStrings  #-}
 {-# LANGUAGE RecordWildCards    #-}
 
+{- |
+Module      :  AlexCss.hs
+Description :  File containing the main starting point for the server.
+Maintainer  :  <AlexGagne>
+
+This module defines the configuration for the server and handles routing
+-}
+
 module AlexWeb where
 
+import qualified AlexHtml                        as Html
 import           Control.Monad
 import           Data.Data
 import qualified Data.Text                       as T
 import qualified Happstack.Server                as Happ
 import           System.Console.CmdArgs.Implicit ((&=))
 import qualified System.Console.CmdArgs.Implicit as I
-import qualified System.Environment              as E
-import qualified AlexHtml                        as Html
 
 main :: IO ()
 main = do
   config <- I.cmdArgs aConfig
-  mongoUri <- getBDValue
   Happ.simpleHTTP (hConf config) myApp
 
 myApp :: Happ.ServerPart Happ.Response
-myApp = msum
-  [ Happ.dir "echo" Html.echo,
-    Html.homepage
-  ]
-
-getBDValue :: IO String
-getBDValue = E.getEnv "MONGODB_URI"
+myApp = msum[Happ.dir "resume" $ Happ.serveDirectory Happ.DisableBrowsing ["data.txt"] "data",
+             Happ.ok $ Happ.toResponse Html.homepage]
 
 -- Config
 --------------------------------------------------------------------------------
@@ -35,7 +36,7 @@ data Config =
   Config { port :: Int, timeout :: Int } deriving ( Show, Eq, Data, Typeable )
 
 hConf :: Config -> Happ.Conf
-hConf (Config {..}) = Happ.nullConf { Happ.timeout = timeout, Happ.port = port }
+hConf Config {..} = Happ.nullConf { Happ.timeout = timeout, Happ.port = port }
 
 aConfig :: Config
 aConfig =
