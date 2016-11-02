@@ -2,9 +2,9 @@
 
 module AlexCss (generateCss) where
 
-import Clay
+import           Clay
 import qualified Data.Text.Internal.Lazy as T
-import System.Directory
+import           System.Directory
 
 bodyStyle :: Css
 bodyStyle = body ? do

@@ -4,19 +4,17 @@
 
 module AlexWeb where
 
+import qualified AlexHtml                        as Html
 import           Control.Monad
 import           Data.Data
 import qualified Data.Text                       as T
 import qualified Happstack.Server                as Happ
 import           System.Console.CmdArgs.Implicit ((&=))
 import qualified System.Console.CmdArgs.Implicit as I
-import qualified System.Environment              as E
-import qualified AlexHtml                        as Html
 
 main :: IO ()
 main = do
   config <- I.cmdArgs aConfig
-  mongoUri <- getBDValue
   Happ.simpleHTTP (hConf config) myApp
 
 myApp :: Happ.ServerPart Happ.Response
@@ -24,9 +22,6 @@ myApp = msum
   [ Happ.dir "echo" $ Happ.path $ \msg -> Happ.ok $ Happ.toResponse $ Html.echo msg,
     Happ.ok $ Happ.toResponse Html.homepage
   ]
-
-getBDValue :: IO String
-getBDValue = E.getEnv "MONGODB_URI"
 
 -- Config
 --------------------------------------------------------------------------------
