@@ -4,7 +4,7 @@
 
 
 {- |
-Module      :  AlexCss.hs
+Module      :  AlexHtml.hs
 Description :  Generation of the HTML for the website.
 Maintainer  :  <AlexGagne>
 
@@ -24,23 +24,26 @@ import qualified Text.Blaze.Html5.Attributes as A
 
 
 homepage :: H.Html
-homepage = template "My homepage" $ do
+homepage = template 
+            "Alex Gagné" 
+            (do
                 H.h1 "Hello!"
-                mainBody welcome
+                mainBody welcome) 
+            False 
 
-template :: T.Text -> H.Html -> H.Html
-template title body =
+template :: T.Text -> H.Html -> Bool -> H.Html
+template title body showBackHome =
     H.docTypeHtml $ do
         H.head $ do
             H.title (H.toHtml title)
             css
         H.body $ do
             body
-            H.p $ H.a ! A.href "/" $ "back home"
+            if showBackHome
+            then H.p $ H.a ! A.href "/" $ "back home"
+            else H.text $ T.pack ""
 
-            welcome :: H.Html
-
-
+welcome :: H.Html
 welcome = do
     H.p "Welcome to this website! I am Alex Gagné and I am an undergraduate student at Polytechnique Montréal. "
     H.p $ H.text $ T.pack $
