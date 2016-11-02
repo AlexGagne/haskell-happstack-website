@@ -43,13 +43,14 @@ template title body =
 
 welcome = do
     H.p "Welcome to this website! I am Alex Gagné and I am an undergraduate student at Polytechnique Montréal. "
-    H.p $ H.toHtml $
-          "I enjoy learning about many aspects of software engineering and development such as " ++ 
-          "algorithms, distributed and parallel systems and web development. " ++
-          "What I really enjoy the most, however, is always learning new technologies and frameworks. " ++
-          "This is the main reason why I created this website, to learn Haskell but also to "
+    H.p $ H.text $ T.pack $
+           "I enjoy learning about many aspects of software engineering and development such as " ++ 
+           "algorithms, distributed and parallel systems and web development. " ++
+           "What I really enjoy the most, however, is always learning new technologies and frameworks. " ++
+           "This is the main reason why I created this website, to learn Haskell but also to learn web" ++
+           "development."
     H.p $ do 
-        H.toHtml $
+        H.text $ T.pack $
           "This website was coded by me in my spare time using Haskell and Happstack. " ++
           "The full code is available on Github: "
         H.a ! A.href "https://github.com/AlexGagne/haskell-happstack-website" $ "Code"
