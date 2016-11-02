@@ -2,6 +2,14 @@
 {-# LANGUAGE OverloadedStrings  #-}
 {-# LANGUAGE RecordWildCards    #-}
 
+{- |
+Module      :  AlexWeb.hs
+Description :  File containing the main starting point for the server.
+Maintainer  :  <AlexGagne>
+
+This module defines the configuration for the server and handles routing
+-}
+
 module AlexWeb where
 
 import qualified AlexHtml                        as Html
@@ -18,10 +26,8 @@ main = do
   Happ.simpleHTTP (hConf config) myApp
 
 myApp :: Happ.ServerPart Happ.Response
-myApp = msum
-  [ Happ.dir "echo" $ Happ.path $ \msg -> Happ.ok $ Happ.toResponse $ Html.echo msg,
-    Happ.ok $ Happ.toResponse Html.homepage
-  ]
+myApp = msum[Happ.dir "resume" $ Happ.serveDirectory Happ.DisableBrowsing ["data.txt"] "data",
+             Happ.ok $ Happ.toResponse Html.homepage]
 
 -- Config
 --------------------------------------------------------------------------------
@@ -30,7 +36,7 @@ data Config =
   Config { port :: Int, timeout :: Int } deriving ( Show, Eq, Data, Typeable )
 
 hConf :: Config -> Happ.Conf
-hConf (Config {..}) = Happ.nullConf { Happ.timeout = timeout, Happ.port = port }
+hConf Config {..} = Happ.nullConf { Happ.timeout = timeout, Happ.port = port }
 
 aConfig :: Config
 aConfig =

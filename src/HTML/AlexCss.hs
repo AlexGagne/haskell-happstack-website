@@ -2,10 +2,8 @@
 
 {- |
 Module      :  AlexCss.hs
-Description :  Generation of the CSS for the website.
+Description :  File containing CSS generation for the main pages of the website
 Maintainer  :  <AlexGagne>
-
-This module generates the CSS for the website
 -}
 
 module AlexCss (generateCss) where

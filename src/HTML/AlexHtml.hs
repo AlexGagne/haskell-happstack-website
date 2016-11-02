@@ -2,15 +2,13 @@
 {-# LANGUAGE OverloadedStrings  #-}
 {-# LANGUAGE RecordWildCards    #-}
 
-
 {- |
-Module      :  AlexCss.hs
-Description :  Generation of the HTML for the website.
+Module      :  AlexHtml.hs
+Description :  File containing Html generation for the main pages of the website
 Maintainer  :  <AlexGagne>
 
-This module generates the HTML for the website
+This module includes Html generation for the main pages of the website. This website only currently includes a webpage.
 -}
-
 
 module AlexHtml (homepage) where
 
@@ -28,7 +26,7 @@ homepage = template "My homepage" $ do
                 H.h1 "Hello!"
                 mainBody welcome
 
-template :: T.Text -> H.Html -> H.Html
+template :: T.Text -> H.Html ->  H.Html
 template title body =
     H.docTypeHtml $ do
         H.head $ do
@@ -36,11 +34,11 @@ template title body =
             css
         H.body $ do
             body
-            H.p $ H.a ! A.href "/" $ "back home"
+            footer $ H.p $ H.a ! A.href "/" $ "back home"
 
-            welcome :: H.Html
+-- Text content
 
-
+welcome :: H.Html
 welcome = do
     H.p "Welcome to this website! I am Alex Gagné and I am an undergraduate student at Polytechnique Montréal. "
     H.p $ H.toHtml $
@@ -72,6 +70,6 @@ hsCode :: H.Html -> H.Html
 hsCode code = H.div code ! A.class_ "haskell"
 
 
--- Generation of embedded css
+-- Access to the CSS generating code
 css :: H.Html
 css = H.style ! A.type_ "text/css" $ H.toHtml Css.generateCss
