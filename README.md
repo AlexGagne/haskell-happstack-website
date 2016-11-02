@@ -1,5 +1,5 @@
 # Haskell Happstack Personal Website
-This website is my attempt at creating a website and server in Haskell on Heroku. It uses @begriffs's Haskell buildpack and is largely inspired by https://github.com/tel/happstack-heroku-test
+This website is my attempt at creating a website and server in Haskell on Heroku. It uses @begriffs's Haskell buildpack available here : https://github.com/begriffs/heroku-buildpack-ghc
 
 ## Building on a local machine
 
@@ -14,7 +14,7 @@ cabal install --only-dependencies
 cabal build
 `
 
-This will create a sandbox inside the project's directory and will install all dependencies from Hackage. Finally, the last command will build the program in `./dist/build/server/server`. You might need to run `cabal update` the first time you run cabal. After any modification, you only need to run `cabal build` to build the project.
+This will create a sandbox inside the project's directory and will install all dependencies from Hackage. Finally, the last command will build the program in `./dist/build/server/server`. You might need to run `cabal update` the first time you run cabal. After any modifications, you only need to run `cabal build` to build the project.
 
 ## Launch on Heroku
 
