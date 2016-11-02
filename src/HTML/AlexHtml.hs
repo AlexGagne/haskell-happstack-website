@@ -15,6 +15,7 @@ This module generates the HTML for the website
 module AlexHtml (homepage) where
 
 import qualified AlexCss                     as Css
+import qualified AlexDb                      as Db         
 import           Control.Monad
 import           Data.Data
 import qualified Data.Text                   as T
