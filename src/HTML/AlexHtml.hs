@@ -51,7 +51,7 @@ welcome = do
            "I enjoy learning about many aspects of software engineering and development such as " ++ 
            "algorithms, distributed and parallel systems and web development. " ++
            "What I really enjoy the most, however, is always learning new technologies and frameworks. " ++
-           "This is the main reason why I created this website, to learn Haskell but also to learn web" ++
+           "This is the main reason why I created this website, to learn Haskell but also to learn web " ++
            "development."
     H.p $ do 
         H.text $ T.pack $
