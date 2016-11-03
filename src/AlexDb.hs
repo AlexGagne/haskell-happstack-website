@@ -10,12 +10,21 @@ This file gives access to the MongoDB containing most of the text and data assoc
 
 module AlexDb  (Post) where
 
-import Data.Dates                   (DateTime)
+import Data.Time.Clock              (UTCTime)
+import Data.Time.Clock.POSIX        (POSIXTime, posixSecondsToUTCTime)
 import Data.Text                    (pack, unpack, splitOn, Text)
 import qualified System.Environment as E
 import qualified Database.MongoDB   as DB
+import Database.MongoDB             ((!?))
 
 -- getAllBlogPosts :: Action IO[Post]
+
+documentToPost :: DB.Document -> Post
+documentToPost doc = Post postTitle postContent postPostedDate postLastModifiedDate where
+    postTitle = pack $ getString (pack "title") doc
+    postContent = pack $ getString (pack "content") doc 
+    postPostedDate = posixSecondsToUTCTime ((fromIntegral $ getInteger "postedDate" doc) :: POSIXTime)
+    postLastModifiedDate = posixSecondsToUTCTime ((fromIntegral $ getInteger "lastModifiedDate" doc) :: POSIXTime)
 
 allPosts :: DB.Action IO [DB.Document]
 allPosts = DB.rest =<< DB.find (DB.select [] "posts")
@@ -62,6 +71,8 @@ parseDatabaseName dbValue = last $ splitOn (pack "/") (pack dbValue)
 getDBValue :: IO String
 getDBValue = E.getEnv "MONGODB_URI"
 
+
+-- Data Types
 data DatabaseInfo = DatabaseInfo
     { user         :: Text
     , password     :: Text
@@ -72,5 +83,31 @@ data DatabaseInfo = DatabaseInfo
 data Post = Post
     { title :: Text
     , content :: Text
-    , date :: DateTime
+    , postedDate :: UTCTime
+    , lastModifiedDate :: UTCTime
     }
+
+-- Utilities
+getString :: DB.Label -> DB.Document -> String
+getString label = DB.typed . DB.valueAt label
+
+getInteger :: DB.Label -> DB.Document -> Integer
+getInteger label = DB.typed . DB.valueAt label
+
+getObjId :: DB.Document -> DB.ObjectId
+getObjId = DB.typed . DB.valueAt "_id" 
+
+getSecondaryObjId :: DB.Label -> DB.Document -> DB.ObjectId
+getSecondaryObjId label = DB.typed . DB.valueAt label 
+
+lookupString :: DB.Label -> DB.Document -> Maybe String
+lookupString label document =
+  document !? label
+
+lookupInteger :: DB.Label -> DB.Document -> Maybe Integer
+lookupInteger label document =
+  document !? label
+
+lookupSecondaryObjId :: DB.Label -> DB.Document -> Maybe DB.ObjectId
+lookupSecondaryObjId label document =
+  document !? label

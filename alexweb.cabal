@@ -62,7 +62,7 @@ library
                      -- buildpack to choose the modern mtl dependency.
                      , mtl                 >= 2.1.2
                      , mongoDB
-                     , dates
+                     , time
   hs-source-dirs:      src, 
                        src/HTML
   default-language:    Haskell2010
