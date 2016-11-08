@@ -14,7 +14,7 @@ cabal install --only-dependencies
 cabal build
 `
 
-This will create a sandbox inside the project's directory and will install all dependencies from Hackage. Finally, the last command will build the program in `./dist/build/server/server`. You might need to run `cabal update` the first time you run cabal. After any modifications, you only need to run `cabal build` to build the project.
+This will create a sandbox inside the project's directory and will install all dependencies from Hackage. Finally, the last command will build the program in `./dist/build/server/`. You might need to run `cabal update` the first time you run cabal. After any modifications, you only need to run `cabal build` to build the project.
 
 ## Launch on Heroku
 
