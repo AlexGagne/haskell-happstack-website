@@ -12,27 +12,24 @@ This module generates the HTML for the website
 -}
 
 
-module AlexHtml (homepage) where
+module AlexHtml (renderBlogPosts) where
 
 import qualified AlexCss                     as Css
-import qualified AlexDb                      as Db         
-import           Control.Monad
-import           Data.Data
-import qualified Data.Text                   as T
+import qualified AlexDb                      as Db
+import           Data.Text                   (Text, pack)
+import           Data.Text.Lazy              (fromStrict)
 import           Text.Blaze.Html5            ((!))
 import qualified Text.Blaze.Html5            as H
 import qualified Text.Blaze.Html5.Attributes as A
+import           Text.Markdown               (def, markdown)
 
 
-homepage :: H.Html
-homepage = template 
-            "Alex Gagné" 
-            (do
-                H.h1 "Hello!"
-                mainBody welcome) 
-            False 
+renderBlogPosts :: IO H.Html
+renderBlogPosts = do
+  posts <- Db.getAllBlogPosts
+  return $ template "Welcome" (concatenateHtml $ renderAllPosts posts) False
 
-template :: T.Text -> H.Html -> Bool -> H.Html
+template :: Text -> H.Html -> Bool -> H.Html
 template title body showBackHome =
     H.docTypeHtml $ do
         H.head $ do
@@ -42,32 +39,28 @@ template title body showBackHome =
             body
             if showBackHome
             then H.p $ H.a ! A.href "/" $ "back home"
-            else H.text $ T.pack ""
-
-welcome :: H.Html
-welcome = do
-    H.p "Welcome to this website! I am Alex Gagné and I am an undergraduate student at Polytechnique Montréal. "
-    H.p $ H.text $ T.pack $
-           "I enjoy learning about many aspects of software engineering and development such as " ++ 
-           "algorithms, distributed and parallel systems and web development. " ++
-           "What I really enjoy the most, however, is always learning new technologies and frameworks. " ++
-           "This is the main reason why I created this website, to learn Haskell but also to learn web " ++
-           "development."
-    H.p $ do 
-        H.text $ T.pack $
-          "This website was coded by me in my spare time using Haskell and Happstack. " ++
-          "The full code is available on Github: "
-        H.a ! A.href "https://github.com/AlexGagne/haskell-happstack-website" $ "Code"
+            else H.text $ pack ""
 
 
+concatenateHtml :: [H.Html] -> H.Html
+concatenateHtml [] = H.text $ pack ""
+concatenateHtml (x:xs) = mainBody $ do
+                          H.p x
+                          concatenateHtml xs
+
+renderAllPosts :: [Db.Post] -> [H.Html]
+renderAllPosts posts = map renderPost posts
+
+renderPost :: Db.Post -> H.Html
+renderPost post = markdown def $ fromStrict $ Db.content post
 
 -- Useful divs and ids
 
 menu :: H.Html -> H.Html
-menu entry = H.div entry ! A.id "menu" 
+menu entry = H.div entry ! A.id "menu"
 
 mainBody :: H.Html -> H.Html
-mainBody body = H.div body ! A.id "main_body" 
+mainBody body = H.div body ! A.id "main_body"
 
 footer :: H.Html -> H.Html
 footer foot = H.div foot ! A.id "footer"

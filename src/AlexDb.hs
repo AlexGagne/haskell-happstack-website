@@ -8,41 +8,41 @@ Maintainer  :  <AlexGagne>
 This file gives access to the MongoDB containing most of the text and data associated with the website.
 -}
 
-module AlexDb  (Post) where
+module AlexDb (Post, getAllBlogPosts, title, content, postedDate, lastModifiedDate) where
 
 import Data.Time.Clock              (UTCTime)
 import Data.Time.Clock.POSIX        (POSIXTime, posixSecondsToUTCTime)
 import Data.Text                    (pack, unpack, splitOn, Text)
 import qualified System.Environment as E
-import qualified Database.MongoDB   as DB
+import qualified Database.MongoDB   as Db
 import Database.MongoDB             ((!?))
 
--- getAllBlogPosts :: Action IO[Post]
+getAllBlogPosts :: IO [Post]
+getAllBlogPosts = fmap (map documentToPost) $ runMongo allPosts
 
-documentToPost :: DB.Document -> Post
+documentToPost :: Db.Document -> Post
 documentToPost doc = Post postTitle postContent postPostedDate postLastModifiedDate where
     postTitle = pack $ getString (pack "title") doc
     postContent = pack $ getString (pack "content") doc 
     postPostedDate = posixSecondsToUTCTime ((fromIntegral $ getInteger "postedDate" doc) :: POSIXTime)
     postLastModifiedDate = posixSecondsToUTCTime ((fromIntegral $ getInteger "lastModifiedDate" doc) :: POSIXTime)
 
-allPosts :: DB.Action IO [DB.Document]
-allPosts = DB.rest =<< DB.find (DB.select [] "posts")
+allPosts :: Db.Action IO [Db.Document]
+allPosts = Db.rest =<< Db.find (Db.select [] "posts")
 
+runMongo :: Db.Action IO a -> IO a
 runMongo functionToRun = do
-    dbValue <- getDBValue
+    dbValue <- getDbValue
     let dbInfo = getDatabaseInformation dbValue
     let dbHost = unpack $ host dbInfo
     let dbUser = user dbInfo
     let dbPassword = password dbInfo
     let dbName = databaseName dbInfo
-    pipe <- DB.connect $ DB.readHostPort dbHost
-    success <- DB.access pipe DB.master dbName $ DB.auth dbUser dbPassword
-    if success
-        then do 
-            e <- DB.access pipe DB.master dbName functionToRun
-            DB.close pipe
-    else DB.close pipe
+    pipe <- Db.connect $ Db.readHostPort dbHost
+    Db.access pipe Db.master dbName $ Db.auth dbUser dbPassword
+    e <- Db.access pipe Db.master dbName functionToRun
+    Db.close pipe
+    return e
 
 getDatabaseInformation :: String -> DatabaseInfo
 getDatabaseInformation dbValue = DatabaseInfo dbUser dbPassword dbHost dbDatabaseName where
@@ -68,8 +68,8 @@ parseDatabaseName dbValue = last $ splitOn (pack "/") (pack dbValue)
 
 -- | Gives the uri for mongodb in the following format: 
 -- | mongodb://dbuser:dbpass@host:port/dbname
-getDBValue :: IO String
-getDBValue = E.getEnv "MONGODB_URI"
+getDbValue :: IO String
+getDbValue = E.getEnv "MONGODB_URI"
 
 
 -- Data Types
@@ -88,26 +88,26 @@ data Post = Post
     }
 
 -- Utilities
-getString :: DB.Label -> DB.Document -> String
-getString label = DB.typed . DB.valueAt label
+getString :: Db.Label -> Db.Document -> String
+getString label = Db.typed . Db.valueAt label
 
-getInteger :: DB.Label -> DB.Document -> Integer
-getInteger label = DB.typed . DB.valueAt label
+getInteger :: Db.Label -> Db.Document -> Integer
+getInteger label = Db.typed . Db.valueAt label
 
-getObjId :: DB.Document -> DB.ObjectId
-getObjId = DB.typed . DB.valueAt "_id" 
+getObjId :: Db.Document -> Db.ObjectId
+getObjId = Db.typed . Db.valueAt "_id" 
 
-getSecondaryObjId :: DB.Label -> DB.Document -> DB.ObjectId
-getSecondaryObjId label = DB.typed . DB.valueAt label 
+getSecondaryObjId :: Db.Label -> Db.Document -> Db.ObjectId
+getSecondaryObjId label = Db.typed . Db.valueAt label 
 
-lookupString :: DB.Label -> DB.Document -> Maybe String
+lookupString :: Db.Label -> Db.Document -> Maybe String
 lookupString label document =
   document !? label
 
-lookupInteger :: DB.Label -> DB.Document -> Maybe Integer
+lookupInteger :: Db.Label -> Db.Document -> Maybe Integer
 lookupInteger label document =
   document !? label
 
-lookupSecondaryObjId :: DB.Label -> DB.Document -> Maybe DB.ObjectId
+lookupSecondaryObjId :: Db.Label -> Db.Document -> Maybe Db.ObjectId
 lookupSecondaryObjId label document =
   document !? label

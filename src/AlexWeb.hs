@@ -15,19 +15,20 @@ module AlexWeb where
 import qualified AlexHtml                        as Html
 import           Control.Monad
 import           Data.Data
-import qualified Data.Text                       as T
 import qualified Happstack.Server                as Happ
 import           System.Console.CmdArgs.Implicit ((&=))
 import qualified System.Console.CmdArgs.Implicit as I
+import qualified Text.Blaze.Html5                as H
 
 main :: IO ()
 main = do
   config <- I.cmdArgs aConfig
-  Happ.simpleHTTP (hConf config) myApp
+  posts <- Html.renderBlogPosts
+  Happ.simpleHTTP (hConf config) $ myApp posts
 
-myApp :: Happ.ServerPart Happ.Response
-myApp = msum[Happ.dir "resume" $ Happ.serveDirectory Happ.DisableBrowsing ["data.txt"] "data",
-             Happ.ok $ Happ.toResponse Html.homepage]
+myApp :: H.Html -> Happ.ServerPart Happ.Response
+myApp blogPosts = msum[Happ.dir "resume" $ Happ.serveDirectory Happ.DisableBrowsing ["data.txt"] "data",
+                       Happ.ok $ Happ.toResponse blogPosts]
 
 -- Config
 --------------------------------------------------------------------------------
