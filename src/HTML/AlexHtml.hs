@@ -44,7 +44,7 @@ template title body showBackHome =
 
 concatenateHtml :: [H.Html] -> H.Html
 concatenateHtml [] = H.text $ pack ""
-concatenateHtml (x:xs) = mainBody $ do
+concatenateHtml (x:xs) = blogPost $ do
                           H.p x
                           concatenateHtml xs
 
@@ -59,8 +59,8 @@ renderPost post = markdown def $ fromStrict $ Db.content post
 menu :: H.Html -> H.Html
 menu entry = H.div entry ! A.id "menu"
 
-mainBody :: H.Html -> H.Html
-mainBody body = H.div body ! A.id "main_body"
+blogPost :: H.Html -> H.Html
+blogPost post = H.div post ! A.id "blog_post"
 
 footer :: H.Html -> H.Html
 footer foot = H.div foot ! A.id "footer"
