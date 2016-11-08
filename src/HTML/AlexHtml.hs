@@ -27,7 +27,7 @@ import           Text.Markdown               (def, markdown)
 renderBlogPosts :: IO H.Html
 renderBlogPosts = do
   posts <- Db.getAllBlogPosts
-  return $ template "Alex Gagné" (blogPosts $ concatenateHtml $ renderAllPosts posts) False
+  return $ template "Alex Gagné" (blogPosts $ concatenateHtmlBlogPosts $ renderAllPosts posts) False
 
 template :: Text -> H.Html -> Bool -> H.Html
 template title body showBackHome =
@@ -42,11 +42,11 @@ template title body showBackHome =
             else H.text $ pack ""
 
 
-concatenateHtml :: [H.Html] -> H.Html
-concatenateHtml [] = H.text $ pack ""
-concatenateHtml (x:xs) = do
+concatenateHtmlBlogPosts :: [H.Html] -> H.Html
+concatenateHtmlBlogPosts [] = H.text $ pack ""
+concatenateHtmlBlogPosts (x:xs) = do
                           (blogPost $ H.p x)
-                          concatenateHtml xs
+                          concatenateHtmlBlogPosts xs
 
 renderAllPosts :: [Db.Post] -> [H.Html]
 renderAllPosts posts = map renderPost posts
