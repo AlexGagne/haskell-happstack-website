@@ -18,7 +18,7 @@ import qualified Database.MongoDB   as Db
 import Database.MongoDB             ((!?))
 
 getAllBlogPosts :: IO [Post]
-getAllBlogPosts = fmap (map documentToPost) $ runMongo allPosts
+getAllBlogPosts = fmap (map documentToPost) $ runMongoResult allPosts
 
 documentToPost :: Db.Document -> Post
 documentToPost doc = Post postTitle postContent postPostedDate postLastModifiedDate where
@@ -30,8 +30,9 @@ documentToPost doc = Post postTitle postContent postPostedDate postLastModifiedD
 allPosts :: Db.Action IO [Db.Document]
 allPosts = Db.rest =<< Db.find (Db.select [] "posts")
 
-runMongo :: Db.Action IO a -> IO a
-runMongo functionToRun = do
+-- run a query that returns something of type a
+runMongoResult :: Db.Action IO a -> IO a
+runMongoResult functionToRun = do
     dbValue <- getDbValue
     let dbInfo = getDatabaseInformation dbValue
     let dbHost = unpack $ host dbInfo

@@ -27,7 +27,7 @@ import           Text.Markdown               (def, markdown)
 renderBlogPosts :: IO H.Html
 renderBlogPosts = do
   posts <- Db.getAllBlogPosts
-  return $ template "Welcome" (concatenateHtml $ renderAllPosts posts) False
+  return $ template "Alex Gagné" (blogPosts $ concatenateHtml $ renderAllPosts posts) False
 
 template :: Text -> H.Html -> Bool -> H.Html
 template title body showBackHome =
@@ -56,11 +56,14 @@ renderPost post = markdown def $ fromStrict $ Db.content post
 
 -- Useful divs and ids
 
-menu :: H.Html -> H.Html
-menu entry = H.div entry ! A.id "menu"
+header :: H.Html -> H.Html
+header entry = H.div entry ! A.id "header"
 
 blogPost :: H.Html -> H.Html
 blogPost post = H.div post ! A.id "blog_post"
+
+blogPosts :: H.Html -> H.Html
+blogPosts posts = H.div posts ! A.id "blog_posts"
 
 footer :: H.Html -> H.Html
 footer foot = H.div foot ! A.id "footer"
