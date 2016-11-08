@@ -44,8 +44,8 @@ template title body showBackHome =
 
 concatenateHtml :: [H.Html] -> H.Html
 concatenateHtml [] = H.text $ pack ""
-concatenateHtml (x:xs) = blogPost $ do
-                          H.p x
+concatenateHtml (x:xs) = do
+                          (blogPost $ H.p x)
                           concatenateHtml xs
 
 renderAllPosts :: [Db.Post] -> [H.Html]
