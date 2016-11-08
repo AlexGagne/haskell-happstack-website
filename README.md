@@ -35,12 +35,13 @@ I plan for this website to become my own personal website but is it currently in
 
 - Can output HTML using Blaze-Html with embedded CSS generated using Clay
 - Has access to a MongoDB
+- Connects to the MongoDB and uses it to store data related to a blog/personal website
+- Converts markdown from the database to HTML 
 
 ## TODO
 
-- Connect to the MongoDB and start using it to store data related to a blog/personal website
-- Look into Javascript generating libraries
 - Make the generated website pretty and usable
+- Look into Javascript generating libraries
 
 ## Problems with unknown solutions
 
